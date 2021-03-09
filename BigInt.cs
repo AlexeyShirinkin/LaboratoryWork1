@@ -7,10 +7,13 @@ namespace LaboratoryWork1
 {
     public class BigInt
     {
-        private readonly List<byte> number = new List<byte>();
+        private readonly List<byte> numbers = new List<byte>();
         public bool IsPositiveSign { get; }
-        public int Count => number.Count;
-        public byte this[int index] => number[index];
+        public int Count => numbers.Count;
+        public byte this[int index] 
+            => index >= 0 && index < Count 
+                ? numbers[index] 
+                : (byte) 0; 
 
         public string Value
         {
@@ -20,7 +23,7 @@ namespace LaboratoryWork1
                 if (!IsPositiveSign)
                     result.Append("-");
                 for (var i = Count - 1; i >= 0; --i)
-                    result.Append(number[i]);
+                    result.Append(numbers[i]);
                 return result.ToString();
             }
         }
@@ -28,7 +31,7 @@ namespace LaboratoryWork1
         public BigInt()
         {
             IsPositiveSign = true;
-            number.Add(0);
+            numbers.Add(0);
         }
 
         public BigInt(string value)
@@ -37,37 +40,28 @@ namespace LaboratoryWork1
             if (!IsPositiveSign)
                 value = value.Remove(0, 1);
             for (var i = value.Length - 1; i >= 0; --i)
-                number.Add(byte.Parse(value[i].ToString()));
+                numbers.Add(byte.Parse(value[i].ToString()));
         }
 
-        private BigInt(bool isPositiveSign, List<byte> number)
+        private BigInt(bool isPositiveSign, List<byte> numbers)
         {
             IsPositiveSign = isPositiveSign;
-            this.number = number;
+            this.numbers = numbers;
         }
 
         public static BigInt operator+(BigInt value1, BigInt value2)
         {
             var result = new List<byte>();
+            var maxLength = Math.Max(value1.Count, value2.Count);
+
             var rank = 0;
-            var index = 0;
-            for (; index < value1.Count && index < value2.Count; ++index)
+            for (var i = 0; i < maxLength; ++i)
             {
-                var value = value1[index] + value2[index] + rank;
+                var value = value1[i] + value2[i] + rank;
                 result.Add((byte)(value % 10));
                 rank = value / 10;
             }
-
-            var remainder = index < value1.Count
-                ? value1
-                : value2;
-
-            for (; index < remainder.Count; ++index)
-            {
-                var value = remainder[index] + rank;
-                result.Add((byte)(value % 10));
-                rank = value / 10;
-            }
+            
             if (rank > 0)
                 result.Add((byte)rank);
 
@@ -77,15 +71,16 @@ namespace LaboratoryWork1
         public static BigInt operator -(BigInt value1, BigInt value2)
         {
             var resultSign = value1 > value2;
-            var newValue1 = value1 > value2 ? value1 : value2;
-            var newValue2 = value1 > value2 ? value2 : value1;
+            var newValue1 = resultSign ? value1 : value2;
+            var newValue2 = resultSign ? value2 : value1;
 
             var result = new List<byte>();
+            var maxLength = Math.Max(value1.Count, value2.Count);
+
             var rank = 0;
-            var index = 0;
-            for (; index < newValue1.Count && index < newValue2.Count; ++index)
+            for (var i = 0; i < maxLength; ++i)
             {
-                var value = newValue1[index] - newValue2[index] - rank;
+                var value = newValue1[i] - newValue2[i] - rank;
                 if (value < 0)
                 {
                     value += 10;
@@ -96,25 +91,6 @@ namespace LaboratoryWork1
                 result.Add((byte) (value % 10));
             }
 
-            var remainder = index < newValue1.Count
-                ? newValue1
-                : newValue2;
-
-            for (; index < remainder.Count; ++index)
-            {
-                var value = remainder[index] - rank;
-                if (value < 0)
-                {
-                    value += 10;
-                    rank = value / 10 + 1;
-                }
-                else rank = value / 10;
-
-                result.Add((byte)(value % 10));
-            }
-
-            if (rank > 0)
-                result.Add((byte) rank);
             while (result[result.Count - 1] == 0)
                 result.RemoveAt(result.Count - 1);
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace LaboratoryWork1
 {
@@ -43,7 +38,8 @@ namespace LaboratoryWork1
         [TestCase("847", "178", "1025", TestName = "WhenNumbersHaveSameLength")]
         [TestCase("95841", "177478", "273319", TestName = "WhenLeftNumberIsShorter")]
         [TestCase("177478", "95841", "273319", TestName = "WhenRightNumberIsShorter")]
-        [TestCase("17747984891984498489498489", "494981874984984894984984", "18242966766969483384483473", TestName = "WhenBigNumbers")]
+        [TestCase("17747984891984498489498489", "494981874984984894984984", "18242966766969483384483473",
+            TestName = "WhenBigNumbers")]
         public void CorrectAddition_WhenBothNumberArePositive(string value1, string value2, string expectedValue)
         {
             var number1 = new BigInt(value1);
@@ -57,7 +53,8 @@ namespace LaboratoryWork1
         [TestCase("-847", "-178", "-1025", TestName = "WhenNumbersHaveSameLength")]
         [TestCase("-95841", "-177478", "-273319", TestName = "WhenLeftNumberIsShorter")]
         [TestCase("-177478", "-95841", "-273319", TestName = "WhenRightNumberIsShorter")]
-        [TestCase("-17747984891984498489498489", "-494981874984984894984984", "-18242966766969483384483473", TestName = "WhenBigNumbers")]
+        [TestCase("-17747984891984498489498489", "-494981874984984894984984", "-18242966766969483384483473", 
+            TestName = "WhenBigNumbers")]
         public void CorrectAddition_WhenBothNumberAreNegative(string value1, string value2, string expectedValue)
         {
             var number1 = new BigInt(value1);
