@@ -49,7 +49,26 @@ namespace LaboratoryWork1
             this.numbers = numbers;
         }
 
+        private BigInt(bool isPositiveSign, BigInt value)
+        {
+            IsPositiveSign = isPositiveSign;
+            numbers = value.numbers;
+        }
+
         public static BigInt operator+(BigInt value1, BigInt value2)
+        {
+            if (value1.IsPositiveSign && value2.IsPositiveSign)
+                return new BigInt(true, Sum(value1, value2));
+            if (!value1.IsPositiveSign && !value2.IsPositiveSign)
+                return new BigInt(false, Sum(
+                    new BigInt(true, value1),
+                    new BigInt(true, value2)));
+            if (value1 > value2)
+                return value1 - new BigInt(true, value2);
+            return value2 - new BigInt(true, value1);
+        }
+
+        private static List<byte> Sum(BigInt value1, BigInt value2)
         {
             var result = new List<byte>();
             var maxLength = Math.Max(value1.Count, value2.Count);
@@ -61,14 +80,27 @@ namespace LaboratoryWork1
                 result.Add((byte)(value % 10));
                 rank = value / 10;
             }
-            
+             
             if (rank > 0)
                 result.Add((byte)rank);
-
-            return new BigInt(value1.IsPositiveSign, result);
+            return result;
         }
 
         public static BigInt operator -(BigInt value1, BigInt value2)
+        {
+            if (value1.IsPositiveSign && value2.IsPositiveSign)
+                return new BigInt(value1 > value2, Subtraction(value1, value2));
+            if (!value1.IsPositiveSign && !value2.IsPositiveSign)
+                return new BigInt(value1 > value2, 
+                    Subtraction(
+                        new BigInt(true, value1),
+                        new BigInt(true, value2)));
+            if (value1 > value2)
+                return value1 + new BigInt(true, value2);
+            return new BigInt(false, value2 + new BigInt(true, value1));
+        }
+
+        private static List<byte> Subtraction(BigInt value1, BigInt value2)
         {
             var resultSign = value1 > value2;
             var newValue1 = resultSign ? value1 : value2;
@@ -88,15 +120,13 @@ namespace LaboratoryWork1
                 }
                 else rank = value / 10;
 
-                result.Add((byte) (value % 10));
+                result.Add((byte)(value % 10));
             }
 
             while (result[result.Count - 1] == 0)
                 result.RemoveAt(result.Count - 1);
-
-            return new BigInt(resultSign, result);
+            return result;
         }
-
         public static bool operator ==(BigInt value1, BigInt value2)
         {
             if (value1.IsPositiveSign != value2.IsPositiveSign || value1.Count != value2.Count)

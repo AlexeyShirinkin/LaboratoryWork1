@@ -65,12 +65,57 @@ namespace LaboratoryWork1
             Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
         }
 
+        [TestCase("-847", "178", "-669", TestName = "WhenNumbersHaveSameLength")]
+        [TestCase("-95841", "177478", "81637", TestName = "WhenLeftNumberIsNegative")]
+        [TestCase("177478", "-95841", "81637", TestName = "WhenRightNumberIsNegative")]
+        [TestCase("17747984891984498489498489", "-41949818749849848949840984", "-24201833857865350460342495",
+            TestName = "WhenBigNumbers")]
+        public void CorrectAddition_WhenPositiveAndNegativeNumbers(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 + number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
         [TestCase("847", "178", "669", TestName = "WhenNumbersHaveSameLength")]
         [TestCase("95841", "177478", "-81637", TestName = "WhenLeftNumberIsShorter")]
         [TestCase("177478", "95841", "81637", TestName = "WhenRightNumberIsShorter")]
         [TestCase("17747984891984498489498489", "41949818749849848949840984", "-24201833857865350460342495",
             TestName = "WhenBigNumbers")]
         public void CorrectSubtraction_WhenBothNumberArePositive(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 - number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("-847", "-178", "-669", TestName = "WhenNumbersHaveSameLength")]
+        [TestCase("-95841", "-177478", "81637", TestName = "WhenLeftNumberIsShorter")]
+        [TestCase("-177478", "-95841", "-81637", TestName = "WhenRightNumberIsShorter")]
+        [TestCase("-17747984891984498489498489", "-41949818749849848949840984", "24201833857865350460342495",
+            TestName = "WhenBigNumbers")]
+        public void CorrectSubtraction_WhenBothNumberAreNegative(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 - number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("-847", "178", "-1025", TestName = "WhenNumbersHaveSameLength")]
+        [TestCase("95841", "-177478", "273319", TestName = "WhenLeftNumberIsShorter")]
+        [TestCase("-177478", "95841", "-273319", TestName = "WhenRightNumberIsShorter")]
+        [TestCase("17747984891984498489498489", "-41949818749849848949840984", "59697803641834347439339473",
+            TestName = "WhenBigNumbers")]
+        public void CorrectSubtraction_WhenPositiveAndNegativeNumbers(string value1, string value2, string expectedValue)
         {
             var number1 = new BigInt(value1);
             var number2 = new BigInt(value2);
