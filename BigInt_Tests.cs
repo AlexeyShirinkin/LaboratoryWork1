@@ -110,8 +110,8 @@ namespace LaboratoryWork1
             Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
         }
 
-        [TestCase("-847", "178", "-1025", TestName = "WhenNumbersHaveSameLength")]
         [TestCase("95841", "-177478", "273319", TestName = "WhenLeftNumberIsShorter")]
+        [TestCase("-847", "178", "-1025", TestName = "WhenNumbersHaveSameLength")]
         [TestCase("-177478", "95841", "-273319", TestName = "WhenRightNumberIsShorter")]
         [TestCase("17747984891984498489498489", "-41949818749849848949840984", "59697803641834347439339473",
             TestName = "WhenBigNumbers")]
@@ -121,6 +121,37 @@ namespace LaboratoryWork1
             var number2 = new BigInt(value2);
 
             var actual = number1 - number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("847", "178", "150766", TestName = "WhenBothNumbersArePositive")]
+        [TestCase("-1478", "-95841", "141652998", TestName = "WhenBothNumbersAreNegative")]
+        [TestCase("-177478", "15841", "-2811428998", TestName = "WhenPositiveAndNegativeNumbers")]
+        [TestCase("17747984891984498489498489", "-41949818749849848949840984",
+            "-744524749393823160874372569351363330891430458273176",
+            TestName = "WhenBigNumbers")]
+        public void CorrectMultiplication(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 * number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("847", "178", "4", TestName = "WhenBothNumbersArePositive")]
+        [TestCase("-1478", "-95841", "0", TestName = "WhenBothNumbersAreNegative")]
+        [TestCase("177478", "-15841", "-11", TestName = "WhenPositiveAndNegativeNumbers")]
+        [TestCase("17747984891984498489498489", "188840984", "93983755623644168",
+            TestName = "WhenBigNumbers")]
+        public void CorrectDivision(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 / number2;
 
             Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
         }
