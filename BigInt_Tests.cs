@@ -155,5 +155,20 @@ namespace LaboratoryWork1
 
             Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
         }
+
+        [TestCase("847", "178", "135", TestName = "WhenBothNumbersArePositive")]
+        [TestCase("-1478", "-95841", "-1478", TestName = "WhenBothNumbersAreNegative")]
+        [TestCase("177478", "-15841", "3227", TestName = "WhenPositiveAndNegativeNumbers")]
+        [TestCase("17747984891984498489498489", "188840984", "138517177",
+            TestName = "WhenBigNumbers")]
+        public void CorrectModulo(string value1, string value2, string expectedValue)
+        {
+            var number1 = new BigInt(value1);
+            var number2 = new BigInt(value2);
+
+            var actual = number1 % number2;
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
     }
 }
