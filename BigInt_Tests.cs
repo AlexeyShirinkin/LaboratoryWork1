@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace LaboratoryWork1
 {
@@ -169,6 +170,27 @@ namespace LaboratoryWork1
             var actual = number1 % number2;
 
             Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("7", "13", "2", TestName = "WhenUsualNumbers")]
+        [TestCase("8948456163", "8942", "1605", TestName = "WhenBigNumbers")]
+        public void CorrectInverseElementInModulo(string value, string modulo, string expectedValue)
+        {
+            var number1 = new BigInt(value);
+            var number2 = new BigInt(modulo);
+
+            var actual = BigInt.InverseElementOnModulo(number1, number2);
+
+            Assert.AreEqual(new BigInt(expectedValue).Value, actual.Value);
+        }
+
+        [TestCase("4", "26", TestName = "WhenInverseElementDoesNotExist")]
+        public void InverseElementInModulo_ThrowException(string value, string modulo)
+        {
+            var number1 = new BigInt(value);
+            var number2 = new BigInt(modulo);
+
+            Assert.Throws<InvalidOperationException>(() => BigInt.InverseElementOnModulo(number1, number2));
         }
     }
 }
