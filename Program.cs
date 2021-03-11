@@ -29,6 +29,7 @@ namespace LaboratoryWork1
             foreach (var item in encoded)
                 Console.WriteLine(item);
 
+            Console.WriteLine();
             Console.WriteLine(RSA.Decode(encoded, d, n));
         }
     }

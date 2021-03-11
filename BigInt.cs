@@ -8,11 +8,6 @@ namespace LaboratoryWork1
         public BigInteger Value { get; }
         public int Sign => Value.Sign;
 
-        public BigInt()
-        {
-            Value = new BigInteger(0);
-        }
-            
         public BigInt(string numbers)
         {
             Value = BigInteger.Parse(numbers);
