@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LaboratoryWork1
 {
@@ -11,10 +8,28 @@ namespace LaboratoryWork1
     {
         public static void Main()
         {
-            var a = "-1234";
-            BigInteger.Parse(a);
-            var value1 = BigInteger.Parse(a); ;
-            Console.WriteLine(value1);
+            var reader = new StreamReader("text.txt");
+            var p = new BigInt(reader.ReadLine());
+            var q = new BigInt(reader.ReadLine());
+            var value = reader.ReadLine();
+            reader.Close();
+
+            if (!RSA.IsSimpleNumber(p) || !RSA.IsSimpleNumber(q) || p == q)
+            {
+                Console.WriteLine("Числа не взаимопросты! Повторите попытку");
+                return;
+            }
+
+            var n = p * q;
+            var m = (p - new BigInt("1")) * (q - new BigInt("1"));
+            var e = RSA.CalculatePublicExponent(m);
+            var d = RSA.CalculateSecretExponent(e, m);
+
+            var encoded = RSA.Encode(value, e, n);
+            foreach (var item in encoded)
+                Console.WriteLine(item);
+
+            Console.WriteLine(RSA.Decode(encoded, d, n));
         }
     }
 }

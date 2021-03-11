@@ -47,29 +47,11 @@ namespace LaboratoryWork1
 
         public static BigInt InverseElementOnModulo(BigInt number, BigInt modulo)
         {
-            var divisor = GreatestCommonDivisor(number, modulo, out var result, out var y);
+            var divisor = EuclideanAlgorithm.GreatestCommonDivisor(number, modulo, out var result, out var y);
             if (divisor.Value != 1)
                 throw new InvalidOperationException();
             result = (result % modulo + modulo) % modulo;
             return result;
-        }
-
-        private static BigInt GreatestCommonDivisor(BigInt number, BigInt modulo, 
-            out BigInt coefficient1, out BigInt coefficient2)
-        {
-            if (number.Value == 0)
-            {
-                coefficient1 = new BigInt("0");
-                coefficient2 = new BigInt("1");
-                return modulo;
-            }
-
-            var divisor = GreatestCommonDivisor(modulo % number, number,
-                out var newCoefficient1, out var newCoefficient2);
-
-            coefficient1 = newCoefficient2 - modulo / number * newCoefficient1;
-            coefficient2 = newCoefficient1;
-            return divisor;
         }
     }
 }   
