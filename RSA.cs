@@ -33,7 +33,7 @@ namespace LaboratoryWork1
         }
 
         public static BigInt CalculateSecretExponent(BigInt publicExponent, BigInt modulo)
-            => InverseElementOnModulo(publicExponent, modulo);
+            => BigInt.InverseElementOnModulo(publicExponent, modulo);
 
         public static BigInt CalculatePublicExponent(BigInt modulo)
         {
@@ -67,15 +67,6 @@ namespace LaboratoryWork1
                     return false;
 
             return true;
-        }
-
-        private static BigInt InverseElementOnModulo(BigInt number, BigInt modulo)
-        {
-            var divisor = EuclideanAlgorithm.GreatestCommonDivisor(number, modulo, out var result, out var y);
-            if (divisor != new BigInt("1"))
-                throw new InvalidOperationException();
-            result = (result % modulo + modulo) % modulo;
-            return result;
         }
 
         private static BigInt FastPowOnModulo(BigInt value, BigInt exponent, BigInt modulo)
