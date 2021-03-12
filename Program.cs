@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
 namespace LaboratoryWork1
 {
@@ -20,17 +19,17 @@ namespace LaboratoryWork1
                 return;
             }
 
-            var n = p * q;
-            var m = (p - new BigInt("1")) * (q - new BigInt("1"));
-            var e = RSA.CalculatePublicExponent(m);
-            var d = RSA.CalculateSecretExponent(e, m);
+            var modulo = p * q;
+            var phi = (p - new BigInt("1")) * (q - new BigInt("1"));
+            var publicExponent = RSA.CalculatePublicExponent(phi);
+            var secretExponent = RSA.CalculateSecretExponent(publicExponent, phi);
 
-            var encoded = RSA.Encode(value, e, n);
+            var encoded = RSA.Encode(value, publicExponent, modulo);
             foreach (var item in encoded)
                 Console.WriteLine(item);
 
             Console.WriteLine();
-            Console.WriteLine(RSA.Decode(encoded, d, n));
+            Console.WriteLine(RSA.Decode(encoded, secretExponent, modulo));
         }
     }
 }
