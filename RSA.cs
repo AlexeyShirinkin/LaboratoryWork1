@@ -19,7 +19,7 @@ namespace LaboratoryWork1
             return encodedParts;
         }
 
-        public static string Decode(List<string> input, BigInt secretExponent, BigInt modulo)
+        public static string Decode(IEnumerable<string> input, BigInt secretExponent, BigInt modulo)
         {
             var decodedValue = new StringBuilder();
 

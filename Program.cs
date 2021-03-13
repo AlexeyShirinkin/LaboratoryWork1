@@ -24,12 +24,20 @@ namespace LaboratoryWork1
             var publicExponent = RSA.CalculatePublicExponent(phi);
             var secretExponent = RSA.CalculateSecretExponent(publicExponent, phi);
 
-            var encoded = RSA.Encode(value, publicExponent, modulo);
-            foreach (var item in encoded)
-                Console.WriteLine(item);
 
-            Console.WriteLine();
-            Console.WriteLine(RSA.Decode(encoded, secretExponent, modulo));
+            var writer = new StreamWriter("encoded.txt");
+            foreach (var item in RSA.Encode(value, publicExponent, modulo))
+                writer.WriteLine(item);
+            writer.Close();
+
+            reader = new StreamReader("encoded.txt");
+            var data = RSA.Decode(reader.ReadToEnd().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries),
+                secretExponent, modulo);
+            reader.Close();
+
+            var result = new StreamWriter("result.txt");
+            result.Write(data);
+            result.Close();
         }
     }
 }
