@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace LaboratoryWork1
@@ -12,8 +12,8 @@ namespace LaboratoryWork1
 
             foreach (var symbol in value)
             {
-                var result = FastPowOnModulo(new BigInt(((int)symbol).ToString()), publicExponent, modulo);
-                encodedParts.Add(result.Value.ToString());
+                var result = BigInteger.ModPow(new BigInt(((int)symbol).ToString()).Value, publicExponent.Value, modulo.Value);
+                encodedParts.Add(result.ToString());
             }
 
             return encodedParts;
@@ -25,8 +25,8 @@ namespace LaboratoryWork1
 
             foreach (var item in input)
             {
-                var result = FastPowOnModulo(new BigInt(item), secretExponent, modulo);
-                decodedValue.Append((char)result.Value);
+                var result = BigInteger.ModPow(new BigInt(item).Value, secretExponent.Value, modulo.Value);
+                decodedValue.Append((char)result);
             }
 
             return decodedValue.ToString();
@@ -67,39 +67,6 @@ namespace LaboratoryWork1
                     return false;
 
             return true;
-        }
-
-        private static BigInt FastPowOnModulo(BigInt value, BigInt exponent, BigInt modulo)
-        {
-            var binaryValue = ConvertToBinary(exponent);
-
-            var arr = new BigInt[binaryValue.Count];
-            arr[0] = value;
-            for (var i = 1; i < binaryValue.Count; i++)
-                arr[i] = arr[i - 1] * arr[i - 1] % modulo;
-
-            var multiplication = new BigInt("1");
-            var zero = new BigInt("0");
-            for (var j = 0; j < binaryValue.Count; j++)
-                if (binaryValue[j] > zero)
-                    multiplication *= binaryValue[j] * arr[j];
-
-            return multiplication % modulo;
-        }
-
-        private static List<BigInt> ConvertToBinary(BigInt value)
-        {
-            var temp = value;
-            var binaryValue = new List<BigInt>();
-            var two = new BigInt("2");
-
-            while (temp.Value >= 1)
-            {
-                binaryValue.Add(temp % two);
-                temp /= two;
-            }
-
-            return binaryValue;
-        }
+        }   
     }
 }
